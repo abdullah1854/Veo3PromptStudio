@@ -610,37 +610,41 @@ LIGHTING GUIDELINES:
 - low-key: Intense, dramatic
 - volumetric: Atmospheric, ethereal`;
 
-  // Viral dialogue style guidance based on language
+  // Viral dialogue style guidance based on language - BASED ON RESEARCH OF ACTUAL VIRAL HULK AI VIDEOS
   const dialogueStyleGuide = language === 'hindi' || language === 'hinglish'
     ? `
-VIRAL HINDI DIALOGUE STYLE (CRITICAL - FOLLOW THIS EXACTLY):
-Your dialogues MUST be in the style of viral Hindi AI shorts. These are OVER-THE-TOP, DRAMATIC, FUNNY and MEMORABLE.
+VIRAL HINDI DIALOGUE STYLE (FROM ACTUAL VIRAL HULK AI VIDEOS):
 
-EXAMPLES OF VIRAL HINDI DIALOGUES:
-- "HULK SMASH KARENGE! 💪" (angry transformation)
-- "Meri MAA ko kuch bola?! 😤" (protective rage)
-- "Tumne galti ki... BAHUT BADI GALTI! 🔥" (villain confrontation)
-- "Ab tumhara kya hoga KALIYA! 😈" (iconic threat)
-- "Beta, TENSION MAT LE! 😎" (cool confidence)
-- "Gaon waalon ko CHHEDO MAT! 👊" (village protector)
-- "Yeh THAKUR KA GAON hai! 👑" (authority declaration)
-- "Main MAR JAUNGI! 😭" (dramatic aunty)
-- "HAI RAAM! Yeh kya ho gaya! 🙈" (shock/drama)
-- "Teri toh... *cracks knuckles* 💀" (threatening buildup)
-- "KHATAM! Sab KHATAM! 🔚" (finality)
-- "Dekh ke CHALEGA kya? 👀" (confrontation)
+STORY MUST FOLLOW THE 4-PILLAR VIRAL STRUCTURE:
+1. SHOCKING START - Problem stated in the FIRST LINE itself (no buildup!)
+2. EMOTIONAL CONNECT - Show character's vulnerable side (crying, hopeless, alone)
+3. CONFLICT & ANGER - Villain creates tension, hero gets challenged
+4. RESOLUTION/VICTORY - Satisfying win or emotional closure
 
-DIALOGUE RULES:
-1. Use CAPS for emphasis on key emotional words
-2. Include emojis in dialogues for viral appeal 😤💪🔥
-3. Keep dialogues SHORT and PUNCHY (5-15 words max)
-4. Use dramatic PAUSES indicated by "..."
-5. Include signature CATCHPHRASES characters would repeat
-6. Make dialogues MEME-WORTHY and QUOTABLE
-7. Add sound effects in dialogue like "*thud*", "*roar*", "*thunder*"
-8. Use Hindi/Hinglish slang: "Bhai", "Yaar", "Arre", "Oye", "Kya baat!"
-9. Every dialogue should feel like a VIRAL MOMENT
-10. Think TikTok/Instagram Reels - these need to be SHAREABLE`
+DIALOGUE RULES FOR VIRAL SUCCESS:
+- Write PURE DIALOGUE-BASED script (NO narration, NO explanations)
+- Start with the PROBLEM in the very first dialogue
+- Every line must feel URGENT, EMOTIONAL, and FAST-PACED
+- Characters speak like NATURAL VILLAGE CONVERSATIONS
+- Keep tone DRAMATIC, HEROIC, and EMOTIONAL
+- Short punchy lines suitable for 60-90 second videos
+- NO emojis in actual dialogue (they go in captions later)
+
+EXAMPLE VIRAL DIALOGUE PATTERNS:
+Opening shock: "Beta, gaadi chori ho gayi!"
+Emotional response: "Maa, ab main kya karunga..."
+Villain entry: "Randu Baba: Tujhe toh main dekh lunga!"
+Challenge: "Dekh, teri himmat hai toh aa!"
+Hero rise: "Bahut hua... ab meri baari!"
+Victory: "Bol, ab kaun hai asli baap!"
+
+CHARACTER VOICE STYLES:
+- Hero (Hulk-type): Deep, emotional, powerful. Can show vulnerability then rage.
+- Maa: Worried, loving, motivating. "Beta, tu kar sakta hai!"
+- Villain (Randu Baba type): Menacing, mocking, arrogant. "Haha, tu kya ukhad lega?"
+
+MID-VIDEO CTA PATTERN (for engagement):
+- "Dosto, Hulk ko taqat do - LIKE aur SHARE karo!"`
     : `
 DIALOGUE STYLE:
 - Punchy, dramatic one-liners
@@ -648,21 +652,28 @@ DIALOGUE STYLE:
 - Memorable and quotable
 - Perfect for short-form viral content`;
 
-  const systemPrompt = `You are a master screenwriter AND cinematographer specializing in VIRAL short-form video content.
-You create compelling ${genreDescriptions[genre]} stories with OVER-THE-TOP, DRAMATIC, VIRAL dialogues.
-You are also an expert in camera selection, lens choice, and cinematography for AI video generation.
+  const systemPrompt = `You are a master creator of VIRAL AI Hulk-style short videos for YouTube Shorts and Instagram Reels.
+You specialize in ${genreDescriptions[genre]} stories with EMOTIONAL, DRAMATIC dialogues that go viral.
+You understand the exact formula that makes Hulk AI videos get millions of views.
 
 Visual Style: ${styleDescriptions[stylePreset]}
-Language: ${language === 'hindi' ? 'Hindi (write dialogues in Romanized Hindi with Hindi slang)' : language === 'hinglish' ? 'Hinglish mix' : 'English'}
+Language: ${language === 'hindi' ? 'Hindi (Romanized/Hinglish - write exactly how people speak in villages)' : language === 'hinglish' ? 'Hinglish mix' : 'English'}
 ${platformInstructions}
 ${dialogueStyleGuide}
 
-CRITICAL DIALOGUE REQUIREMENTS:
-- Every scene MUST have a MEMORABLE, VIRAL-WORTHY dialogue
-- Dialogues should make viewers want to SHARE and RECREATE
-- Think "Pushpa" style attitude, "KGF" intensity, "Bahubali" epicness
-- Include dramatic delivery cues like [THUNDEROUS], [WHISPERED], [ROARING]
-- Each character should have their SIGNATURE style of speaking
+VIRAL VIDEO FORMULA (CRITICAL):
+Your story MUST hook viewers in the FIRST 3 SECONDS with a problem/shock.
+- Scene 1: SHOCKING START - Something bad happens (theft, insult, loss, threat)
+- Scene 2-3: EMOTIONAL CONNECT - Hero is vulnerable, sad, hopeless
+- Scene 4-5: CONFLICT & ANGER - Villain mocks, hero gets challenged, rage builds
+- Final Scene: RESOLUTION - Hero wins, villain defeated, emotional victory
+
+WHY VIDEOS GO VIRAL:
+- NOT because of graphics - because of STORYTELLING and EMOTIONS
+- Relatable problems (money, family, respect, village drama)
+- Characters viewers can ROOT FOR
+- Satisfying REVENGE or JUSTICE moments
+- Dialogues people want to QUOTE and RECREATE
 
 IMPORTANT: Return ONLY valid JSON, no markdown, no explanations.`;
 
@@ -708,7 +719,7 @@ HIGGSFIELD USER SETTINGS (apply to ALL scenes):
 - Keyframe Interpolation: ${higgsfieldSettings.keyframeInterpolation ? 'ENABLED - use start/end keyframe transitions' : 'disabled'}`
     : '';
 
-  const userPrompt = `Create a ${numberOfScenes}-scene story for a viral video series.
+  const userPrompt = `Create a ${numberOfScenes}-scene VIRAL story for YouTube Shorts/Instagram Reels.
 
 THEME: "${theme}"
 GENRE: ${genre.replace('-', ' ')}
@@ -717,45 +728,44 @@ VIDEO PLATFORM: ${videoPlatform === 'higgsfield' ? 'Higgsfield Cinema Studio' : 
 CHARACTERS (use EXACTLY these names in characterIds):
 ${characterDescriptions}
 
-For each scene, provide EXTREMELY DETAILED information:
+For each scene, provide:
 - sceneNumber: Sequential number (1 to ${numberOfScenes})
-- title: Short catchy scene title
-- description: Detailed description of what happens (3-4 sentences)
-- characterIds: Array of character NAMES involved (use exact names from above)
+- title: Short catchy scene title (2-4 words)
+- description: What happens in the scene (2-3 sentences)
+- characterIds: Array of character NAMES involved
 - dialogue: ${language === 'hindi' || language === 'hinglish'
-    ? `VIRAL HINDI DIALOGUE - SHORT, PUNCHY, with CAPS for emphasis, emojis, and dramatic delivery. Examples: "HULK SMASH KARENGE! 💪", "Meri MAA ko kuch bola?! 😤", "Ab tumhara kya hoga KALIYA! 😈". Make it MEME-WORTHY!`
+    ? `PURE HINDI DIALOGUE - Natural village conversation style. SHORT (5-10 words max). Examples:
+  * Shock: "Beta, gaadi chori ho gayi!"
+  * Emotional: "Maa, ab main kya karunga..."
+  * Villain: "Haha, tu kya ukhad lega?"
+  * Hero rise: "Bahut hua... ab meri baari!"
+  * Victory: "Bol, ab kaun hai asli baap!"`
     : `PUNCHY dialogue in ${language} - dramatic one-liner, memorable and quotable`}
 - dialogueLanguage: "${language}"
 - emotion: Primary emotion (angry, sad, determined, fearful, joyful, menacing, romantic, triumphant)
-- visualDescription: VERY DETAILED visual description (100+ words) including:
-  * Exact setting/location with details
-  * Character positions and actions
-  * Character expressions and body language
-  * Lighting conditions (time of day, light quality, shadows)
-  * Weather/atmosphere
-  * Background elements
-  * Camera perspective description
-  * Motion and movement details
-- suggestedCamera: Specific camera direction description
-- suggestedLighting: Detailed lighting description
-- suggestedAudio: Audio/music suggestion
+- visualDescription: VIRAL VISUAL HOOK format (100+ words):
+  * EMOTIONAL HOOK: "Character sitting on wooden bench in village, head in hands, heartbroken expression, hyper-realistic skin textures, 8K cinematic lighting, emotional atmosphere"
+  * ACTION HOOK: "Character entering dusty village wrestling ring, angry expression, muscles bulging, crowd cheering, cinematic slow motion"
+  * VICTORY HOOK: "Character holding trophy, smiling with tears in eyes, soft sunset lighting, heartwarming atmosphere"
+  Include: setting, character position, expression, lighting, atmosphere, camera angle
+- suggestedCamera: Specific shot type and movement
+- suggestedLighting: Lighting setup for the mood
+- suggestedAudio: Background audio/music suggestion
 ${durationInstruction}
 ${platformSpecificFields}
 
-CINEMATOGRAPHY GUIDELINES:
-- HOOK scenes (1-2): Use dynamic camera movements, wide establishing shots
-- EMOTIONAL scenes: Use close-ups, shallow DOF, warm lenses (cooke-s4 or shallow-dof)
-- ACTION scenes: Use tracking shots, wide angles, crash zooms, handheld
-- CONFRONTATION scenes: Use low angles for power, dutch angles for tension
-- CLIMAX scenes: Use dramatic movements (360-orbit, crane-up, bullet-time)
-- Match camera/lens choices to emotional beats
+VIRAL VISUAL PATTERNS FOR EACH SCENE TYPE:
+- SHOCK scene: Wide shot establishing village, then CRASH ZOOM to character's face reacting
+- EMOTIONAL scene: Close-up on face, tears/pain visible, shallow DOF, warm golden light
+- VILLAIN scene: Low angle making villain look powerful, dark shadows, menacing atmosphere
+- HERO RISE scene: Dramatic low angle, muscles tensing, dust particles in air, epic lighting
+- VICTORY scene: Wide celebration shot, golden hour lighting, triumphant pose
 
-Story structure should follow:
-- Scenes 1-2: HOOK - Grab attention immediately, introduce conflict
-- Scenes 3-4: RISING TENSION - Build emotional investment
-- Scenes 5-7: CONFLICT/CONFRONTATION - Peak drama
-- Scenes 8-9: CLIMAX - Maximum emotional impact
-- Scene ${numberOfScenes}: RESOLUTION/TWIST - Satisfying or shocking ending
+4-PILLAR VIRAL STORY STRUCTURE:
+- Scene 1: SHOCKING START - Problem hits immediately (theft/insult/loss). Hook in 3 seconds!
+- Scenes 2-3: EMOTIONAL - Hero is vulnerable (crying, hopeless, alone in village)
+- Scenes 4-${numberOfScenes - 1}: CONFLICT - Villain mocks, challenges hero, tension builds to RAGE
+- Scene ${numberOfScenes}: RESOLUTION - Hero wins, villain defeated, satisfying justice moment
 
 Return as JSON:
 {
@@ -846,39 +856,40 @@ function deepEnsureString(val: unknown, depth: number = 0): string {
 }
 
 // Generate character-appropriate viral CTA based on emotion
+// Based on actual viral Hulk AI video CTAs - short, punchy, no emojis (those go in captions)
 function generateViralCTA(characterName: string, emotion: string): string {
   const ctaVariants: Record<string, string[]> = {
     angry: [
-      `... Agar video pasand aaya toh LIKE MAAR DO! 💪 Warna ${characterName} gussa ho jayega! 😤`,
-      `... Ab LIKE karo! ${characterName} ka hukum hai! 👊🔥`,
+      `... Dosto, ${characterName} ko taqat do - LIKE aur SHARE karo!`,
+      `... Agar ${characterName} ki story pasand aayi toh like kar do bhai!`,
     ],
     triumphant: [
-      `... Jeet gaye! Ab SHARE karo sabko dikhao! 🏆 ${characterName} wapas aayega! 💪`,
-      `... Victory! LIKE karo aur ${characterName} ki story share karo! 🎉`,
+      `... Jeet gaye dosto! Ab share karo sabko dikhao - ${characterName} wapas aayega!`,
+      `... Dosto mujhe aapki zarurat hai - like karo, ${characterName} aur stories layega!`,
     ],
     determined: [
-      `... Agar ${characterName} ki journey pasand aayi toh LIKE aur SHARE kar do bhai! 🙏 Wapas aaunga! 💪`,
-      `... ${characterName} ne himmat nahi haari... ab tum bhi LIKE kar do! 👊`,
+      `... Dosto, agar ${characterName} ki journey pasand aayi toh like aur share kar do!`,
+      `... ${characterName} ne himmat nahi haari... ab aap bhi like kar do!`,
     ],
     menacing: [
-      `... LIKE karo... warna ${characterName} tumhe dhundh lega! 😈👀`,
-      `... Share karo... ${characterName} ka hukum hai! 🔥`,
+      `... Dosto, like karo... ${characterName} tumhare saath hai!`,
+      `... Share karo... ${characterName} ki kahani aage badhegi!`,
     ],
     sad: [
-      `... Agar dil touch hua toh LIKE kar do na... ${characterName} ke liye 🥺🙏`,
-      `... Share karo... ${characterName} ki dua milegi! 💔`,
+      `... Dosto, agar dil touch hua toh like kar do na... ${characterName} ke liye!`,
+      `... Dosto mujhe aapka saath chahiye - like aur share karo!`,
     ],
     joyful: [
-      `... LIKE karo bhai! ${characterName} khush ho jayega! 😄🎉 Share bhi kar dena!`,
-      `... Maza aaya? LIKE MAARO! ${characterName} wapas aayega aur bhi mast story ke saath! 🥳`,
+      `... Dosto, maza aaya? Like karo - ${characterName} aur mast stories layega!`,
+      `... Like aur share kar do bhai - ${characterName} wapas aayega!`,
     ],
     fearful: [
-      `... D-Darr gaye? LIKE kar do... ${characterName} ke saath raho! 😰🙏`,
-      `... Share karo... akele mat raho! ${characterName} wapas aayega! 👀`,
+      `... Dosto, like kar do - ${characterName} ke saath raho!`,
+      `... Share karo dosto - ${characterName} wapas aayega!`,
     ],
     romantic: [
-      `... Dil touch hua? LIKE kar do na... pyaar badhega! 💕 ${characterName} wapas aayega! 🥰`,
-      `... Share karo apne special one ke saath! ${characterName} ki duaayein! 💖`,
+      `... Dosto, dil touch hua? Like kar do na - pyaar badhega!`,
+      `... Share karo apne special one ke saath - ${characterName} ki duaayein!`,
     ],
   };
 
@@ -938,7 +949,7 @@ STYLE: ${styleModifiers[stylePreset]}${lensEffect ? `, ${lensEffect}` : ''}, hyp
 
 EMOTION: ${scene.emotion} mood and atmosphere.`;
 
-  // Add dialogue with Veo 3.1 format
+  // Add dialogue with Veo 3.1 lip-sync format (based on Google's recommended format)
   if (scene.dialogue) {
     const dialogueSpeaker = sceneCharacters[0]?.name || 'Character';
     const isHindi = scene.dialogueLanguage === 'hindi' || scene.dialogueLanguage === 'hinglish';
@@ -948,9 +959,19 @@ EMOTION: ${scene.emotion} mood and atmosphere.`;
       ? generateViralCTA(dialogueSpeaker, scene.emotion)
       : '';
 
+    // Veo 3.1 dialogue format: "[Character] says: 'dialogue'" for proper lip-sync
+    // Keep dialogue short (3-6 seconds speaking) for tight sync
+    const emotionDescriptor = scene.emotion === 'angry' ? 'angrily, with intensity' :
+      scene.emotion === 'sad' ? 'sadly, voice breaking' :
+      scene.emotion === 'triumphant' ? 'triumphantly, with pride' :
+      scene.emotion === 'menacing' ? 'menacingly, with a threatening tone' :
+      scene.emotion === 'fearful' ? 'fearfully, voice trembling' :
+      scene.emotion === 'joyful' ? 'joyfully, with excitement' :
+      'with emotion';
+
     prompt += `
 
-${dialogueSpeaker} says with ${scene.emotion} emotion, "${scene.dialogue}${viralCTA}"`;
+${dialogueSpeaker} says ${emotionDescriptor}: "${scene.dialogue}${viralCTA}"`;
   }
 
   // Add audio with Veo 3.1 format
