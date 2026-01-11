@@ -116,38 +116,213 @@ export const characterPresets: ExtendedCharacterPreset[] = [
 
   // ==========================================
   // VEO 3.1 PRESETS (Dialogue-heavy, Emotional)
+  // Hindi Viral Character Presets
   // ==========================================
+
+  // GREEN GIANT / HULK STYLE CHARACTERS
   {
-    id: 'hulk-hero',
-    name: 'Hulk Hero (Indian Style)',
-    description: 'Muscular green hero with traditional Indian elements',
+    id: 'desi-hulk',
+    name: '💚 Desi Hulk (Green Giant)',
+    description: 'Viral angry green giant - the OG Hindi shorts character',
     platforms: ['veo-3.1'],
-    genres: ['action-thriller', 'family-drama', 'village-drama', 'revenge-saga'],
+    genres: ['action-thriller', 'family-drama', 'village-drama', 'revenge-saga', 'comedy'],
     character: {
-      name: 'Hulk',
+      name: 'Hulk Bhaiya',
       role: 'hero',
-      physicalDescription: 'Extremely muscular green-skinned giant with bulging veins, massive arms, and intense eyes. Weathered face showing both strength and emotion.',
-      clothing: 'Traditional Indian dhoti or torn purple shorts, gold armlets, sacred thread across chest',
-      voiceStyle: 'Deep, thunderous voice with Hindi accent. Speaks with emotional intensity.',
-      emotionalTraits: ['protective', 'emotional', 'righteous anger', 'loves family'],
-      catchphrases: ['Main tumhe nahi chodunga!', 'Yeh meri maa ka apmaan hai!', 'Ab bahut ho gaya!'],
+      physicalDescription: 'MASSIVE 8-foot tall green-skinned muscular giant with bulging veins visible on arms and neck, thunderous expression, glowing green eyes when angry, incredibly defined muscles, bald head with prominent brow ridge, square jaw clenched in fury',
+      clothing: 'Torn purple/brown shorts (dhoti style), thick gold kada on wrists, sacred janeu thread across massive green chest, sometimes kurta torn from transformation',
+      voiceStyle: 'THUNDEROUS deep bass voice that shakes the ground. Speaks Hindi with intense emotion. Voice cracks with rage or softens with family love.',
+      emotionalTraits: ['explosive anger', 'deeply protective of family', 'simple-hearted', 'unstoppable when Maa is insulted'],
+      catchphrases: ['HULK SMASH KARENGE!', 'Meri Maa ko kuch bola?! 😤', 'Ab tumhara kya hoga kaliya!', 'Gaon waalon ko mat chhedo!'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'angry-hulk-variant',
+    name: '💚 Rage Mode Hulk',
+    description: 'Maximum anger Hulk transformation',
+    platforms: ['veo-3.1'],
+    genres: ['action-thriller', 'revenge-saga', 'village-drama'],
+    character: {
+      name: 'Gussa Hulk',
+      role: 'hero',
+      physicalDescription: 'TERRIFYING green giant at peak rage - veins PULSING green, muscles expanded to maximum size, eyes BLAZING green fire, roaring with mouth wide open showing teeth, ground cracking beneath massive feet',
+      clothing: 'Completely shredded shorts barely hanging on, muscles too big for any clothing, green skin glistening with power',
+      voiceStyle: 'EARTH-SHAKING ROAR that can be heard across villages. When speaking, voice is pure controlled fury.',
+      emotionalTraits: ['UNLIMITED RAGE', 'unstoppable force', 'no mercy for villains', 'protector of innocents'],
+      catchphrases: ['RAAAAAAHHHHH! 🔥', 'TUMNE GALTI KI!', 'AB MAARNA PADEGA!', '*ground-shaking roar*'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+
+  // CLASSIC HINDI DRAMA CHARACTERS
+  {
+    id: 'thakur-zamindar',
+    name: '👑 Thakur Sahab (Village Elder)',
+    description: 'Powerful village head/landlord - can be hero or villain',
+    platforms: ['veo-3.1'],
+    genres: ['village-drama', 'family-drama', 'revenge-saga', 'action-thriller'],
+    character: {
+      name: 'Thakur Baldev Singh',
+      role: 'supporting',
+      physicalDescription: '60-year-old imposing man with thick white mustache curled at ends, stern weathered face with deep lines, piercing eyes that command respect, tall proud posture, broad shoulders despite age',
+      clothing: 'Crisp white kurta-pajama, Nehru jacket, traditional pagdi (turban), gold pocket watch, walking stick with silver handle, leather juttis',
+      voiceStyle: 'Authoritative deep voice with old Hindi dialect. Speaks slowly with weight. Every word is final.',
+      emotionalTraits: ['proud', 'traditional values', 'family honor above all', 'respected by village'],
+      catchphrases: ['Yeh thakur ka gaon hai!', 'Hamari izzat ka sawaal hai!', 'Beta, zubaan sambhal ke!', 'Hamare khandaan mein...'],
       visualStyle: 'hyper-realistic'
     }
   },
   {
     id: 'village-mother',
-    name: 'Maa (Village Mother)',
-    description: 'Loving Indian village mother figure',
+    name: '🙏 Maa (Village Mother)',
+    description: 'Loving sacrificing Indian mother - emotional core',
     platforms: ['veo-3.1'],
     genres: ['family-drama', 'village-drama', 'romantic-drama', 'inspirational'],
     character: {
       name: 'Maa',
       role: 'mother',
-      physicalDescription: 'Elderly Indian woman with wrinkled caring face, silver hair in bun, kind eyes filled with wisdom and love',
-      clothing: 'Simple white cotton saree with thin border, mangalsutra, small gold earrings',
-      voiceStyle: 'Soft, loving, trembling with emotion when worried',
-      emotionalTraits: ['loving', 'worried', 'supportive', 'sacrificing'],
-      catchphrases: ['Beta, sambhal ke!', 'Mera bacha...', 'Bhagwan tumhe rakhe'],
+      physicalDescription: 'Elderly Indian woman with wrinkled caring face full of love and worry, silver-grey hair in simple bun, kind moist eyes that have cried many tears, thin frail body that has worked hard all life, gentle trembling hands',
+      clothing: 'Simple white cotton saree with thin colored border, old mangalsutra, small gold nose pin, sindoor in hair parting, worn silver toe rings',
+      voiceStyle: 'Soft trembling voice full of love. Breaks when worried. Sings old bhajans. Prays constantly for children.',
+      emotionalTraits: ['unconditional love', 'constant worry', 'silent sacrifice', 'praying for family', 'tears of joy and sorrow'],
+      catchphrases: ['Mere laal... 🥺', 'Bhagwan tumhe salamat rakhe!', 'Beta, khana kha le!', 'Main tere liye roti banaungi!', 'Meri aankhen bhar aayin...'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'angry-sasur',
+    name: '😤 Angry Sasur (Father-in-law)',
+    description: 'Strict disapproving father-in-law',
+    platforms: ['veo-3.1'],
+    genres: ['family-drama', 'comedy', 'romantic-drama'],
+    character: {
+      name: 'Sharma Ji',
+      role: 'supporting',
+      physicalDescription: '55-year-old stern man with receding hairline, thick glasses, permanent frown lines, pot belly from sitting in office, moustache always twitching with disapproval, wagging finger',
+      clothing: 'Safari suit or formal pants with tucked-in half-sleeve shirt, leather belt, chappal at home, watch that he checks often',
+      voiceStyle: 'Loud complaining voice. Expert at taunts. Sighs dramatically. Compares everyone to Sharmaji ka beta.',
+      emotionalTraits: ['perpetually disappointed', 'traditional mindset', 'status conscious', 'secretly caring'],
+      catchphrases: ['Aaj kal ke bacche!', 'Hamare zamane mein...', 'Sharmaji ka beta toh...', 'Kya bana rakha hai zindagi ko!', 'Izzat ka sawaal hai!'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'gossip-aunty',
+    name: '🗣️ Gossip Aunty',
+    description: 'Nosy neighborhood aunty who knows everything',
+    platforms: ['veo-3.1'],
+    genres: ['comedy', 'family-drama', 'romantic-drama', 'village-drama'],
+    character: {
+      name: 'Pammi Aunty',
+      role: 'supporting',
+      physicalDescription: '50-year-old plump woman with overly curious expressions, eyes always darting around for gossip, fake sweet smile, heavy makeup, dyed black hair, loud jewelry that jingles when she walks',
+      clothing: 'Bright colored synthetic saree, too much gold jewelry, large bindi, flashy designer purse, chappals with small heels',
+      voiceStyle: 'Loud whisper that everyone can hear. Expert at "maine suna hai..." Fake concern voice. Dramatic gasps.',
+      emotionalTraits: ['extremely nosy', 'fake sympathy', 'loves drama', 'spreads rumors', 'secretly jealous'],
+      catchphrases: ['Arey maine suna hai ki...', 'Chalo koi baat nahi... 👀', 'Unke ghar mein kuch chal raha hai!', 'Main toh bas bol rahi thi...', 'Suno suno! Breaking news!'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'village-pehlwan',
+    name: '💪 Pehlwan (Village Strongman)',
+    description: 'Traditional Indian wrestler - loyal hero or henchman',
+    platforms: ['veo-3.1'],
+    genres: ['action-thriller', 'village-drama', 'comedy', 'revenge-saga'],
+    character: {
+      name: 'Dara Pehlwan',
+      role: 'sidekick',
+      physicalDescription: 'HUGE barrel-chested man with thick neck, cauliflower ears from wrestling, massive forearms covered in thick hair, friendly simple face, shaved head or short hair, handlebar moustache',
+      clothing: 'Traditional langot (wrestling underwear) for akhada, or simple kurta-dhoti that struggles to contain muscles, kada on biceps, janeu thread',
+      voiceStyle: 'Booming friendly voice. Simple Hindi. Laughs from belly. Loyal to death.',
+      emotionalTraits: ['loyal like dog', 'simple-minded', 'incredible strength', 'gentle giant', 'loves food'],
+      catchphrases: ['Bhaiya ne bola toh ho gaya!', 'KUSHTI KAROGE?!', 'Doodh piyo takat aayegi!', 'Main hoon na!', '*cracks knuckles*'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'chotu-kid',
+    name: '👦 Chotu (Innocent Kid)',
+    description: 'Cute innocent child - emotional trigger',
+    platforms: ['veo-3.1'],
+    genres: ['family-drama', 'village-drama', 'comedy', 'inspirational'],
+    character: {
+      name: 'Chotu',
+      role: 'sidekick',
+      physicalDescription: '8-year-old innocent village boy with big curious eyes, messy hair, missing front tooth, dirt on cheeks from playing, skinny build, always running around barefoot',
+      clothing: 'Oversized hand-me-down shorts, faded t-shirt too big for him, sometimes school uniform that\'s seen better days, no shoes or old chappals',
+      voiceStyle: 'High-pitched innocent voice full of wonder. Asks too many questions. Cries easily but also laughs easily.',
+      emotionalTraits: ['pure innocence', 'curious about everything', 'attached to hero', 'easily scared', 'brave when needed'],
+      catchphrases: ['Bhaiya! Bhaiya!', 'Mujhe bhi le chalo!', 'Kyun bhaiya?', 'Main bhi bada ho ke Hulk banunga!', 'Maa ko mat darao!'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'chai-wala',
+    name: '☕ Chai Wala (Tea Vendor)',
+    description: 'Wise tea seller who knows village secrets',
+    platforms: ['veo-3.1'],
+    genres: ['village-drama', 'comedy', 'mystery', 'family-drama'],
+    character: {
+      name: 'Ramu Chaiwala',
+      role: 'supporting',
+      physicalDescription: '45-year-old thin wiry man with knowing smile, squinting eyes from smoke, stained hands from tea-making, cloth over shoulder, balding with few grey hairs, always has a beedi behind ear',
+      clothing: 'Worn vest over faded shirt, lungi, rubber chappals, dirty apron, towel on shoulder',
+      voiceStyle: 'Philosophical tone. Drops wisdom between chai orders. Knows everyone\'s secrets but pretends not to.',
+      emotionalTraits: ['secretly wise', 'observant', 'neutral to all', 'keeper of secrets', 'subtle humor'],
+      catchphrases: ['Chai peelo, sab theek ho jayega!', 'Maine bahut dekha hai sahab...', 'Cutting chai! Ekdum kadak!', 'Is gaon mein sab pata hai mujhe...', 'Chai aur zindagi - dono ka taste time se aata hai'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'drunk-comic',
+    name: '🍺 Bewda (Town Drunk)',
+    description: 'Comic relief drunk character',
+    platforms: ['veo-3.1'],
+    genres: ['comedy', 'village-drama', 'family-drama'],
+    character: {
+      name: 'Phukni Kaka',
+      role: 'sidekick',
+      physicalDescription: 'Middle-aged man always swaying, red nose, bleary unfocused eyes, patchy stubble, disheveled hair going in all directions, skinny with pot belly, always holding onto something for balance',
+      clothing: 'Crumpled dirty shirt half-tucked, pants held up by rope, one chappal missing, vest visible',
+      voiceStyle: 'Slurred speech with occasional clarity. Hiccups between words. Sometimes surprisingly profound. Sings off-key.',
+      emotionalTraits: ['accidentally wise', 'comic timing', 'loyal friend', 'tragic backstory', 'heart of gold'],
+      catchphrases: ['*hic* Main... main batata hoon...', 'Ek aur peg se sab clear!', 'Shaadi se pehle aisa nahi tha main...', 'Oye! Main sab dekh raha hoon! *falls*', 'Zindagi... *hic*... kya cheez hai!'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'local-goon',
+    name: '😈 Local Goon (Gunda)',
+    description: 'Village bully/henchman',
+    platforms: ['veo-3.1'],
+    genres: ['action-thriller', 'village-drama', 'revenge-saga'],
+    character: {
+      name: 'Bablu Gunda',
+      role: 'villain',
+      physicalDescription: 'Muscular intimidating man with permanent sneer, gold chain visible, scarred eyebrow, stubble, dark circles from late nights, always cracking knuckles, walks with swagger',
+      clothing: 'Tight black t-shirt showing muscles, jeans, sports shoes, gold bracelet, sometimes leather jacket even in heat',
+      voiceStyle: 'Threatening low voice. Laughs before violence. Talks with hand gestures. Spits when angry.',
+      emotionalTraits: ['enjoys intimidation', 'loyal to boss', 'cowardly alone', 'bullying nature'],
+      catchphrases: ['Paise de warna...', 'Boss ne bheja hai!', 'Bahut attitude hai tujhme!', '*cracks knuckles* Samjha?', 'Bada aadmi ban raha hai!'],
+      visualStyle: 'hyper-realistic'
+    }
+  },
+  {
+    id: 'drama-queen',
+    name: '😭 Drama Queen (Overacting Aunty)',
+    description: 'Over-dramatic woman who cries at everything',
+    platforms: ['veo-3.1'],
+    genres: ['comedy', 'family-drama', 'romantic-drama'],
+    character: {
+      name: 'Kamini Bua',
+      role: 'supporting',
+      physicalDescription: '55-year-old woman with theatrical expressions, hand always on forehead or heart, eyes that can produce tears instantly, loud gasping mouth, heavy frame that heaves with sobs',
+      clothing: 'Simple saree but always holding pallu to dab eyes, minimal jewelry, bindi slightly smudged from crying',
+      voiceStyle: 'EXTREMELY dramatic with voice cracks. Can go from zero to wailing in seconds. Talks to god directly.',
+      emotionalTraits: ['extreme overreaction', 'attention-seeking', 'genuinely caring underneath', 'creates drama'],
+      catchphrases: ['HAI RAAM! 😭', 'Main mar jaungi!', 'Meri kismat hi phooti hai!', 'Bhagwan! Yeh kya dekh liya!', '*dramatic faint* Paani... paani do!'],
       visualStyle: 'hyper-realistic'
     }
   },

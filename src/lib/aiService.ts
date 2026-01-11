@@ -969,6 +969,119 @@ export interface HiggsfieldSceneSettings {
   duration: 5 | 10;
 }
 
+// Generate a single custom character from user description
+export async function generateCustomCharacter(
+  apiKey: string,
+  model: string,
+  userDescription: string,
+  genre: Genre,
+  stylePreset: StylePreset,
+  language: 'hindi' | 'english' | 'hinglish',
+  videoPlatform: VideoPlatform = 'veo-3.1'
+): Promise<Character> {
+  const platformFocus = videoPlatform === 'higgsfield'
+    ? `PLATFORM: Higgsfield Cinema Studio (PHOTOREALISTIC)
+Design a photorealistic character suitable for Hollywood-style action/sci-fi visuals.`
+    : `PLATFORM: Google Veo 3.1 (DIALOGUE-FOCUSED)
+Design a character suitable for emotional, dialogue-heavy Indian content.`;
+
+  const systemPrompt = `You are a master character designer. Create ONE detailed character based on user instructions.
+
+Visual Style: ${styleDescriptions[stylePreset]}
+Genre: ${genreDescriptions[genre]}
+${platformFocus}
+
+IMPORTANT: Return ONLY valid JSON object (not array), no markdown.`;
+
+  const userPrompt = `Create a character based on this description:
+"${userDescription}"
+
+Provide EXTREMELY DETAILED character data:
+- name: A memorable name fitting the description
+- role: One of "hero", "villain", "supporting", "mother", "love-interest", "sidekick"
+- physicalDescription: VERY DETAILED (age, skin tone, face, hair, build, distinctive features)
+- clothing: Specific outfit with colors, fabrics, accessories
+- voiceStyle: How they speak
+- emotionalTraits: Array of 3-4 personality traits
+- catchphrases: Array of 2-3 signature dialogues in ${language}
+- visualStyle: "hyper-realistic"
+- referenceImagePrompt: DETAILED 100+ word prompt for AI image generation
+- backstory: 2-3 sentences background
+
+Return as JSON object: { name, role, physicalDescription, clothing, voiceStyle, emotionalTraits, catchphrases, visualStyle, referenceImagePrompt, backstory }`;
+
+  const response = await callOpenAI(apiKey, model, systemPrompt, userPrompt);
+
+  // Parse JSON from response
+  const jsonMatch = response.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    throw new Error('Failed to parse character data from AI response');
+  }
+
+  const rawCharacter = JSON.parse(jsonMatch[0]) as Omit<Character, 'id'>;
+
+  // Normalize
+  const normalizeToString = (value: unknown): string => {
+    if (typeof value === 'string') return value;
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'object') {
+      return Object.entries(value).map(([k, v]) => `${k}: ${v}`).join(', ');
+    }
+    return String(value);
+  };
+
+  return {
+    ...rawCharacter,
+    id: `custom-char-${Date.now()}`,
+    name: normalizeToString(rawCharacter.name),
+    physicalDescription: normalizeToString(rawCharacter.physicalDescription),
+    clothing: normalizeToString(rawCharacter.clothing),
+    voiceStyle: normalizeToString(rawCharacter.voiceStyle),
+    backstory: normalizeToString(rawCharacter.backstory),
+    referenceImagePrompt: normalizeToString(rawCharacter.referenceImagePrompt),
+    emotionalTraits: Array.isArray(rawCharacter.emotionalTraits)
+      ? rawCharacter.emotionalTraits.map(t => normalizeToString(t))
+      : [normalizeToString(rawCharacter.emotionalTraits)],
+    catchphrases: Array.isArray(rawCharacter.catchphrases)
+      ? rawCharacter.catchphrases.map(c => normalizeToString(c))
+      : [normalizeToString(rawCharacter.catchphrases)]
+  };
+}
+
+// Regenerate reference image prompt for an edited character
+export async function regenerateReferencePrompt(
+  apiKey: string,
+  model: string,
+  character: Character,
+  stylePreset: StylePreset
+): Promise<string> {
+  const systemPrompt = `You are an expert at creating prompts for AI image generation.
+Create a detailed, consistent reference image prompt for character generation.`;
+
+  const userPrompt = `Create a reference image prompt for this character:
+
+NAME: ${character.name}
+ROLE: ${character.role}
+PHYSICAL: ${character.physicalDescription}
+CLOTHING: ${character.clothing}
+PERSONALITY: ${character.emotionalTraits.join(', ')}
+
+Create a VERY DETAILED prompt (100+ words) for generating a consistent reference image including:
+- All physical details exactly as described
+- Exact clothing and accessories
+- Appropriate expression and pose
+- ${stylePreset} visual style
+- 8K hyper-realistic quality
+- Professional studio lighting
+- Clean background
+- Suitable for video generation reference
+
+Return ONLY the prompt text, no explanations or JSON.`;
+
+  const response = await callOpenAI(apiKey, model, systemPrompt, userPrompt);
+  return response.trim();
+}
+
 // Test API connection
 export async function testAPIConnection(apiKey: string, model: string): Promise<boolean> {
   try {

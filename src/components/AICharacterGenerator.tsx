@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Character, ProjectConfig, StylePreset } from '@/types';
-import { generateCharacters, getAPISettings, generateReferenceImagePrompt } from '@/lib/aiService';
+import { generateCharacters, getAPISettings, generateReferenceImagePrompt, generateCustomCharacter, regenerateReferencePrompt } from '@/lib/aiService';
 import { characterPresets, getFilteredPresets } from '@/lib/presets';
 import { getDynamicRoles, getDefaultSelectedRoles } from '@/lib/themeRoles';
 import {
   Sparkles, Users, Trash2, Wand2, Loader2, Copy, Check,
-  User, Image as ImageIcon, AlertCircle, ChevronDown, ChevronUp, Zap
+  User, Image as ImageIcon, AlertCircle, ChevronDown, ChevronUp, Zap, Plus, RefreshCw, PenLine
 } from 'lucide-react';
 
 interface AICharacterGeneratorProps {
@@ -33,6 +33,14 @@ export default function AICharacterGenerator({
   const [selectedRoles, setSelectedRoles] = useState<Character['role'][]>([]);
   const [expandedCharacter, setExpandedCharacter] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Custom character creation state
+  const [showCustomCreator, setShowCustomCreator] = useState(false);
+  const [customDescription, setCustomDescription] = useState('');
+  const [generatingCustom, setGeneratingCustom] = useState(false);
+
+  // Reference prompt regeneration state
+  const [regeneratingPromptId, setRegeneratingPromptId] = useState<string | null>(null);
 
   // Track previous theme to detect changes
   const prevThemeRef = useRef<string | null>(null);
@@ -128,9 +136,9 @@ export default function AICharacterGenerator({
     onUpdateCharacters(characters.filter(c => c.id !== id));
   };
 
-  const handleUpdateCharacter = (id: string, updates: Partial<Character>) => {
+  const handleUpdateCharacter = useCallback((id: string, updates: Partial<Character>) => {
     onUpdateCharacters(characters.map(c => c.id === id ? { ...c, ...updates } : c));
-  };
+  }, [characters, onUpdateCharacters]);
 
   const handleCopyRefPrompt = (character: Character) => {
     const prompt = character.referenceImagePrompt ||
@@ -139,6 +147,77 @@ export default function AICharacterGenerator({
     setCopiedId(character.id);
     setTimeout(() => setCopiedId(null), 2000);
   };
+
+  // Generate custom character from user description
+  const handleGenerateCustom = async () => {
+    const apiSettings = getAPISettings();
+    if (!apiSettings?.apiKey) {
+      onOpenSettings();
+      return;
+    }
+
+    if (!config) {
+      setError('Please complete project setup first');
+      return;
+    }
+
+    if (!customDescription.trim()) {
+      setError('Please describe your character');
+      return;
+    }
+
+    setGeneratingCustom(true);
+    setError(null);
+
+    try {
+      const newCharacter = await generateCustomCharacter(
+        apiSettings.apiKey,
+        apiSettings.model,
+        customDescription,
+        config.genre,
+        config.stylePreset,
+        config.language,
+        config.videoPlatform
+      );
+
+      onUpdateCharacters([...characters, newCharacter]);
+      setCustomDescription('');
+      setShowCustomCreator(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate custom character');
+    } finally {
+      setGeneratingCustom(false);
+    }
+  };
+
+  // Regenerate reference image prompt for a character
+  const handleRegenerateRefPrompt = useCallback(async (characterId: string) => {
+    const apiSettings = getAPISettings();
+    if (!apiSettings?.apiKey) {
+      onOpenSettings();
+      return;
+    }
+
+    const character = characters.find(c => c.id === characterId);
+    if (!character || !config) return;
+
+    setRegeneratingPromptId(characterId);
+
+    try {
+      const newPrompt = await regenerateReferencePrompt(
+        apiSettings.apiKey,
+        apiSettings.model,
+        character,
+        config.stylePreset
+      );
+
+      handleUpdateCharacter(characterId, { referenceImagePrompt: newPrompt });
+    } catch (err) {
+      console.error('Failed to regenerate prompt:', err);
+    } finally {
+      setRegeneratingPromptId(null);
+    }
+  }, [characters, config, onOpenSettings, handleUpdateCharacter]);
 
   const toggleRole = (role: Character['role']) => {
     if (selectedRoles.includes(role)) {
@@ -285,6 +364,59 @@ export default function AICharacterGenerator({
             <p className="text-xs text-zinc-500 mt-2 text-center">
               Uses GPT-4o to create unique theme-aware characters
             </p>
+          </div>
+
+          {/* Custom Character Creator */}
+          <div className="bg-gradient-to-br from-emerald-900/30 to-teal-900/30 rounded-xl p-5 border border-emerald-600/30">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                <PenLine size={16} className="text-emerald-400" />
+                Create Custom Character
+              </h3>
+              <button
+                onClick={() => setShowCustomCreator(!showCustomCreator)}
+                className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+              >
+                {showCustomCreator ? 'Close' : 'Open'}
+                {showCustomCreator ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </button>
+            </div>
+
+            {showCustomCreator ? (
+              <div className="space-y-3">
+                <p className="text-xs text-zinc-400">
+                  Describe your character and AI will generate all the details
+                </p>
+                <textarea
+                  value={customDescription}
+                  onChange={(e) => setCustomDescription(e.target.value)}
+                  placeholder="E.g., An angry green muscular giant who protects his village, speaks in Hindi with thunderous voice, wears torn shorts..."
+                  rows={4}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+                <button
+                  onClick={handleGenerateCustom}
+                  disabled={generatingCustom || !customDescription.trim()}
+                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-white text-sm font-medium flex items-center justify-center gap-2"
+                >
+                  {generatingCustom ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={16} />
+                      Create Character
+                    </>
+                  )}
+                </button>
+              </div>
+            ) : (
+              <p className="text-xs text-zinc-500">
+                Have a specific character in mind? Describe it and let AI create the details.
+              </p>
+            )}
           </div>
 
           {/* Preset Characters - Filtered by platform and genre */}
@@ -442,17 +574,35 @@ export default function AICharacterGenerator({
                             <ImageIcon size={12} />
                             Reference Image Prompt (for Imagen/DALL-E)
                           </label>
-                          <button
-                            onClick={() => handleCopyRefPrompt(character)}
-                            className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1"
-                          >
-                            {copiedId === character.id ? <Check size={12} /> : <Copy size={12} />}
-                            Copy
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleRegenerateRefPrompt(character.id)}
+                              disabled={regeneratingPromptId === character.id}
+                              className="text-xs text-emerald-400 hover:text-emerald-300 disabled:opacity-50 flex items-center gap-1"
+                              title="Regenerate prompt based on current character details"
+                            >
+                              {regeneratingPromptId === character.id ? (
+                                <Loader2 size={12} className="animate-spin" />
+                              ) : (
+                                <RefreshCw size={12} />
+                              )}
+                              Regenerate
+                            </button>
+                            <button
+                              onClick={() => handleCopyRefPrompt(character)}
+                              className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1"
+                            >
+                              {copiedId === character.id ? <Check size={12} /> : <Copy size={12} />}
+                              Copy
+                            </button>
+                          </div>
                         </div>
                         <p className="text-xs text-zinc-300 leading-relaxed">
                           {character.referenceImagePrompt ||
                             generateReferenceImagePrompt(character, config?.stylePreset || 'hyper-realistic' as StylePreset)}
+                        </p>
+                        <p className="text-xs text-zinc-500 mt-2 italic">
+                          💡 Click &quot;Regenerate&quot; after editing character details to update this prompt
                         </p>
                       </div>
                     </div>
