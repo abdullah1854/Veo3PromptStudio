@@ -89,7 +89,7 @@ export default function AIStoryGenerator({
     }
   };
 
-  const handleCopyPrompt = (scene: GeneratedScene) => {
+  const handleCopyPrompt = (scene: GeneratedScene, isLastScene: boolean = false) => {
     const isHiggsfield = config?.videoPlatform === 'higgsfield';
     let promptText: string;
 
@@ -107,7 +107,7 @@ Duration: ${settings.duration}s
 [PROMPT]
 ${prompt}`;
     } else {
-      promptText = generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village');
+      promptText = generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village', isLastScene);
     }
 
     navigator.clipboard.writeText(promptText);
@@ -142,7 +142,8 @@ Duration: ${settings.duration}s
 
 ${prompt}`;
       } else {
-        promptContent = generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village');
+        const isLastScene = index === generatedScenes.length - 1;
+        promptContent = generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village', isLastScene);
       }
 
       return `[SCENE ${index + 1}: ${scene.title}]\nPlatform: ${platformLabel}\nCharacters: ${charInfo}\nDuration: ${scene.duration}s | Emotion: ${scene.emotion}\n\n${promptContent}`;
@@ -441,7 +442,7 @@ ${prompt}`;
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleCopyPrompt(scene);
+                            handleCopyPrompt(scene, index === generatedScenes.length - 1);
                           }}
                           className="p-2 hover:bg-zinc-700 rounded-lg text-zinc-400 hover:text-white"
                           title={`Copy ${config?.videoPlatform === 'higgsfield' ? 'Higgsfield' : 'Veo 3.1'} prompt`}
@@ -546,7 +547,7 @@ ${prompt}`;
                               {config?.videoPlatform === 'higgsfield' ? 'Higgsfield Cinema' : 'Veo 3.1'} Prompt (Ready to Use)
                             </h5>
                             <button
-                              onClick={() => handleCopyPrompt(scene)}
+                              onClick={() => handleCopyPrompt(scene, index === generatedScenes.length - 1)}
                               className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1"
                             >
                               {copiedId === scene.id ? <Check size={12} /> : <Copy size={12} />}
@@ -589,7 +590,7 @@ ${prompt}`;
                           ) : (
                             <div className="bg-gradient-to-r from-amber-900/20 to-orange-900/20 rounded-lg p-3 border border-amber-600/20">
                               <p className="text-sm text-zinc-300 leading-relaxed">
-                                {generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village')}
+                                {generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village', index === generatedScenes.length - 1)}
                               </p>
                             </div>
                           )}

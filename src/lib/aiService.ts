@@ -610,19 +610,59 @@ LIGHTING GUIDELINES:
 - low-key: Intense, dramatic
 - volumetric: Atmospheric, ethereal`;
 
-  const systemPrompt = `You are a master screenwriter AND cinematographer specializing in viral short-form video content.
-You create compelling ${genreDescriptions[genre]} stories with FILMY, dramatic dialogues.
+  // Viral dialogue style guidance based on language
+  const dialogueStyleGuide = language === 'hindi' || language === 'hinglish'
+    ? `
+VIRAL HINDI DIALOGUE STYLE (CRITICAL - FOLLOW THIS EXACTLY):
+Your dialogues MUST be in the style of viral Hindi AI shorts. These are OVER-THE-TOP, DRAMATIC, FUNNY and MEMORABLE.
+
+EXAMPLES OF VIRAL HINDI DIALOGUES:
+- "HULK SMASH KARENGE! 💪" (angry transformation)
+- "Meri MAA ko kuch bola?! 😤" (protective rage)
+- "Tumne galti ki... BAHUT BADI GALTI! 🔥" (villain confrontation)
+- "Ab tumhara kya hoga KALIYA! 😈" (iconic threat)
+- "Beta, TENSION MAT LE! 😎" (cool confidence)
+- "Gaon waalon ko CHHEDO MAT! 👊" (village protector)
+- "Yeh THAKUR KA GAON hai! 👑" (authority declaration)
+- "Main MAR JAUNGI! 😭" (dramatic aunty)
+- "HAI RAAM! Yeh kya ho gaya! 🙈" (shock/drama)
+- "Teri toh... *cracks knuckles* 💀" (threatening buildup)
+- "KHATAM! Sab KHATAM! 🔚" (finality)
+- "Dekh ke CHALEGA kya? 👀" (confrontation)
+
+DIALOGUE RULES:
+1. Use CAPS for emphasis on key emotional words
+2. Include emojis in dialogues for viral appeal 😤💪🔥
+3. Keep dialogues SHORT and PUNCHY (5-15 words max)
+4. Use dramatic PAUSES indicated by "..."
+5. Include signature CATCHPHRASES characters would repeat
+6. Make dialogues MEME-WORTHY and QUOTABLE
+7. Add sound effects in dialogue like "*thud*", "*roar*", "*thunder*"
+8. Use Hindi/Hinglish slang: "Bhai", "Yaar", "Arre", "Oye", "Kya baat!"
+9. Every dialogue should feel like a VIRAL MOMENT
+10. Think TikTok/Instagram Reels - these need to be SHAREABLE`
+    : `
+DIALOGUE STYLE:
+- Punchy, dramatic one-liners
+- Action movie catchphrases
+- Memorable and quotable
+- Perfect for short-form viral content`;
+
+  const systemPrompt = `You are a master screenwriter AND cinematographer specializing in VIRAL short-form video content.
+You create compelling ${genreDescriptions[genre]} stories with OVER-THE-TOP, DRAMATIC, VIRAL dialogues.
 You are also an expert in camera selection, lens choice, and cinematography for AI video generation.
 
 Visual Style: ${styleDescriptions[stylePreset]}
-Language: ${language === 'hindi' ? 'Hindi (write dialogues in Hindi/Romanized Hindi)' : language === 'hinglish' ? 'Hinglish mix' : 'English'}
+Language: ${language === 'hindi' ? 'Hindi (write dialogues in Romanized Hindi with Hindi slang)' : language === 'hinglish' ? 'Hinglish mix' : 'English'}
 ${platformInstructions}
+${dialogueStyleGuide}
 
-Your dialogues should be:
-- EXTREMELY dramatic and memorable (think iconic Bollywood one-liners)
-- Emotionally impactful and quotable
-- Perfect for 8-second video clips
-- Easy to lip-sync
+CRITICAL DIALOGUE REQUIREMENTS:
+- Every scene MUST have a MEMORABLE, VIRAL-WORTHY dialogue
+- Dialogues should make viewers want to SHARE and RECREATE
+- Think "Pushpa" style attitude, "KGF" intensity, "Bahubali" epicness
+- Include dramatic delivery cues like [THUNDEROUS], [WHISPERED], [ROARING]
+- Each character should have their SIGNATURE style of speaking
 
 IMPORTANT: Return ONLY valid JSON, no markdown, no explanations.`;
 
@@ -682,7 +722,9 @@ For each scene, provide EXTREMELY DETAILED information:
 - title: Short catchy scene title
 - description: Detailed description of what happens (3-4 sentences)
 - characterIds: Array of character NAMES involved (use exact names from above)
-- dialogue: The MAIN dialogue in ${language} - make it DRAMATIC, FILMY, MEMORABLE (like iconic movie dialogues)
+- dialogue: ${language === 'hindi' || language === 'hinglish'
+    ? `VIRAL HINDI DIALOGUE - SHORT, PUNCHY, with CAPS for emphasis, emojis, and dramatic delivery. Examples: "HULK SMASH KARENGE! 💪", "Meri MAA ko kuch bola?! 😤", "Ab tumhara kya hoga KALIYA! 😈". Make it MEME-WORTHY!`
+    : `PUNCHY dialogue in ${language} - dramatic one-liner, memorable and quotable`}
 - dialogueLanguage: "${language}"
 - emotion: Primary emotion (angry, sad, determined, fearful, joyful, menacing, romantic, triumphant)
 - visualDescription: VERY DETAILED visual description (100+ words) including:
@@ -787,31 +829,79 @@ TECHNICAL REQUIREMENTS:
 This image will be used as a character reference for AI video generation, so maintain exact consistency in all features.`;
 }
 
+// Recursive helper to flatten any nested objects to strings
+function deepEnsureString(val: unknown, depth: number = 0): string {
+  if (typeof val === 'string') return val;
+  if (val === null || val === undefined) return '';
+  if (Array.isArray(val)) {
+    return val.map(v => deepEnsureString(v, depth + 1)).join(', ');
+  }
+  if (typeof val === 'object' && depth < 5) {
+    // Recursively flatten nested objects
+    return Object.entries(val)
+      .map(([k, v]) => `${k}: ${deepEnsureString(v, depth + 1)}`)
+      .join(', ');
+  }
+  return String(val);
+}
+
+// Generate character-appropriate viral CTA based on emotion
+function generateViralCTA(characterName: string, emotion: string): string {
+  const ctaVariants: Record<string, string[]> = {
+    angry: [
+      `... Agar video pasand aaya toh LIKE MAAR DO! 💪 Warna ${characterName} gussa ho jayega! 😤`,
+      `... Ab LIKE karo! ${characterName} ka hukum hai! 👊🔥`,
+    ],
+    triumphant: [
+      `... Jeet gaye! Ab SHARE karo sabko dikhao! 🏆 ${characterName} wapas aayega! 💪`,
+      `... Victory! LIKE karo aur ${characterName} ki story share karo! 🎉`,
+    ],
+    determined: [
+      `... Agar ${characterName} ki journey pasand aayi toh LIKE aur SHARE kar do bhai! 🙏 Wapas aaunga! 💪`,
+      `... ${characterName} ne himmat nahi haari... ab tum bhi LIKE kar do! 👊`,
+    ],
+    menacing: [
+      `... LIKE karo... warna ${characterName} tumhe dhundh lega! 😈👀`,
+      `... Share karo... ${characterName} ka hukum hai! 🔥`,
+    ],
+    sad: [
+      `... Agar dil touch hua toh LIKE kar do na... ${characterName} ke liye 🥺🙏`,
+      `... Share karo... ${characterName} ki dua milegi! 💔`,
+    ],
+    joyful: [
+      `... LIKE karo bhai! ${characterName} khush ho jayega! 😄🎉 Share bhi kar dena!`,
+      `... Maza aaya? LIKE MAARO! ${characterName} wapas aayega aur bhi mast story ke saath! 🥳`,
+    ],
+    fearful: [
+      `... D-Darr gaye? LIKE kar do... ${characterName} ke saath raho! 😰🙏`,
+      `... Share karo... akele mat raho! ${characterName} wapas aayega! 👀`,
+    ],
+    romantic: [
+      `... Dil touch hua? LIKE kar do na... pyaar badhega! 💕 ${characterName} wapas aayega! 🥰`,
+      `... Share karo apne special one ke saath! ${characterName} ki duaayein! 💖`,
+    ],
+  };
+
+  const variants = ctaVariants[emotion] || ctaVariants['determined'];
+  return variants[Math.floor(Math.random() * variants.length)];
+}
+
 // Convert generated scene to detailed Veo 3.1 prompt
 export function generatedSceneToVeoPrompt(
   scene: GeneratedScene,
   characters: Character[],
-  stylePreset: StylePreset
+  stylePreset: StylePreset,
+  isLastScene: boolean = false
 ): string {
   const sceneCharacters = characters.filter(c =>
     scene.characterIds.includes(c.name) || scene.characterIds.includes(c.id)
   );
 
-  // Helper to ensure value is string (safety net for corrupted data)
-  const ensureString = (val: unknown): string => {
-    if (typeof val === 'string') return val;
-    if (val === null || val === undefined) return '';
-    if (typeof val === 'object') {
-      return Object.entries(val).map(([k, v]) => `${k}: ${v}`).join(', ');
-    }
-    return String(val);
-  };
-
-  // Build detailed character descriptions for the scene
+  // Build detailed character descriptions for the scene (using deepEnsureString for nested objects)
   const characterDescriptions = sceneCharacters.map(c => {
-    const name = ensureString(c.name);
-    const physicalDesc = ensureString(c.physicalDescription);
-    const clothing = ensureString(c.clothing);
+    const name = deepEnsureString(c.name);
+    const physicalDesc = deepEnsureString(c.physicalDescription);
+    const clothing = deepEnsureString(c.clothing);
     return `${name} (${physicalDesc}, wearing ${clothing})`;
   }).join('; ');
 
@@ -851,9 +941,16 @@ EMOTION: ${scene.emotion} mood and atmosphere.`;
   // Add dialogue with Veo 3.1 format
   if (scene.dialogue) {
     const dialogueSpeaker = sceneCharacters[0]?.name || 'Character';
+    const isHindi = scene.dialogueLanguage === 'hindi' || scene.dialogueLanguage === 'hinglish';
+
+    // For last scene in Hindi content, append viral CTA naturally merged with dialogue
+    const viralCTA = (isLastScene && isHindi)
+      ? generateViralCTA(dialogueSpeaker, scene.emotion)
+      : '';
+
     prompt += `
 
-${dialogueSpeaker} says with ${scene.emotion} emotion, "${scene.dialogue}"`;
+${dialogueSpeaker} says with ${scene.emotion} emotion, "${scene.dialogue}${viralCTA}"`;
   }
 
   // Add audio with Veo 3.1 format
@@ -886,20 +983,11 @@ export function generatedSceneToHiggsfieldPrompt(
     scene.characterIds.includes(c.name) || scene.characterIds.includes(c.id)
   );
 
-  // Helper to ensure value is string (safety net for corrupted data)
-  const ensureString = (val: unknown): string => {
-    if (typeof val === 'string') return val;
-    if (val === null || val === undefined) return '';
-    if (typeof val === 'object') {
-      return Object.entries(val).map(([k, v]) => `${k}: ${v}`).join(', ');
-    }
-    return String(val);
-  };
-
+  // Build character descriptions using deepEnsureString for nested objects
   const characterDescriptions = sceneCharacters.map(c => {
-    const name = ensureString(c.name);
-    const physicalDesc = ensureString(c.physicalDescription);
-    const clothing = ensureString(c.clothing);
+    const name = deepEnsureString(c.name);
+    const physicalDesc = deepEnsureString(c.physicalDescription);
+    const clothing = deepEnsureString(c.clothing);
     return `${name} (${physicalDesc}, wearing ${clothing})`;
   }).join('; ');
 

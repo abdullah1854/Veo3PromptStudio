@@ -36,12 +36,12 @@ export default function ExportPanel({
     setTimeout(() => setCopiedItem(null), 2000);
   };
 
-  const getPromptForScene = (scene: GeneratedScene): { text: string; settings?: HiggsfieldSceneSettings } => {
+  const getPromptForScene = (scene: GeneratedScene, isLastScene: boolean = false): { text: string; settings?: HiggsfieldSceneSettings } => {
     if (isHiggsfield) {
       const { prompt, settings } = generatedSceneToHiggsfieldPrompt(scene, characters, config?.stylePreset || 'indian-village');
       return { text: prompt, settings };
     }
-    return { text: generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village') };
+    return { text: generatedSceneToVeoPrompt(scene, characters, config?.stylePreset || 'indian-village', isLastScene) };
   };
 
   const formatHiggsfieldSettings = (settings: HiggsfieldSceneSettings): string => {
@@ -55,7 +55,8 @@ Duration: ${settings.duration}s`;
 
   const generateAllVideoPrompts = () => {
     return generatedScenes.map((scene, index) => {
-      const { text, settings } = getPromptForScene(scene);
+      const isLastScene = index === generatedScenes.length - 1;
+      const { text, settings } = getPromptForScene(scene, isLastScene);
       const duration = isHiggsfield && settings ? settings.duration : scene.duration;
 
       if (isHiggsfield && settings) {
@@ -134,7 +135,8 @@ Duration: ${settings.duration}s`;
     output += '🎬 SCENE-BY-SCENE BREAKDOWN\n';
     output += '─'.repeat(70) + '\n\n';
     generatedScenes.forEach((scene, i) => {
-      const { settings } = getPromptForScene(scene);
+      const isLastScene = i === generatedScenes.length - 1;
+      const { settings } = getPromptForScene(scene, isLastScene);
       const duration = isHiggsfield && settings ? settings.duration : scene.duration;
 
       output += `SCENE ${i + 1}: ${scene.title}\n`;
@@ -189,7 +191,8 @@ Duration: ${settings.duration}s`;
       output += 'Configure camera body, lens, and movements as specified.\n';
       output += 'Note: Higgsfield only supports 5s and 10s clip durations.\n\n';
       generatedScenes.forEach((scene, i) => {
-        const { text, settings } = getPromptForScene(scene);
+        const isLastScene = i === generatedScenes.length - 1;
+        const { text, settings } = getPromptForScene(scene, isLastScene);
         output += `Scene ${i + 1}: ${scene.title}\n`;
         if (settings) {
           output += `[Settings]\n${formatHiggsfieldSettings(settings)}\n\n`;
@@ -200,7 +203,8 @@ Duration: ${settings.duration}s`;
       output += 'Use the prompts below in Google AI Studio or Veo 3.1 API.\n';
       output += 'Upload character reference images for consistency.\n\n';
       generatedScenes.forEach((scene, i) => {
-        const { text } = getPromptForScene(scene);
+        const isLastScene = i === generatedScenes.length - 1;
+        const { text } = getPromptForScene(scene, isLastScene);
         output += `Scene ${i + 1}: ${scene.title}\n`;
         output += `${text}\n\n`;
       });
@@ -408,7 +412,8 @@ Duration: ${settings.duration}s`;
               </div>
             ) : (
               generatedScenes.map((scene, index) => {
-                const { text, settings } = getPromptForScene(scene);
+                const isLastScene = index === generatedScenes.length - 1;
+                const { text, settings } = getPromptForScene(scene, isLastScene);
                 const duration = isHiggsfield && settings ? settings.duration : scene.duration;
                 const id = `video-${index}`;
                 return (
